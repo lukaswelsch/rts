@@ -6,11 +6,11 @@ public class SelectionComponent : MonoBehaviour
 {
     void Start()
     {
-        GetComponent<Renderer>().material.color = Color.red;
+        GetComponentInChildren<Renderer>().material.color = Color.red;
     }
 
     private void OnDestroy()
     {
-        GetComponent<Renderer>().material.color = Color.white;
+        GetComponentInChildren<Renderer>().material.color = Color.white;
     }
 }

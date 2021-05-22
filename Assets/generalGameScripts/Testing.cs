@@ -4,10 +4,10 @@ using UnityEngine;
  
 public class Testing : MonoBehaviour
 {
-    Grid grid;
-    int value;
+    Grid<bool> grid;
+
     private void Start() {
-        grid = new Grid(4, 2, 10f, new Vector3(20,0));
+        grid = new Grid<bool>(40, 20, 5f, new Vector3(0,0), (Grid<bool> g, int x, int z) => false);
     }
  
     private void Update() {
@@ -28,7 +28,7 @@ public class Testing : MonoBehaviour
             
             
                         
-                        grid.SetValue(target, 10);
+                        grid.SetGridObject(target, true);
                         }
                     }
                     
@@ -51,7 +51,7 @@ public class Testing : MonoBehaviour
                             Vector3 target = hit.point;
             
             
-                        Debug.Log(grid.GetValue(target));
+                        Debug.Log(grid.GetGridObject(target));
                         }
                     }
         }
