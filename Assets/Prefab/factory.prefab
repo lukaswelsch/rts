@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 177098521485857259}
-  m_Layer: 0
+  - component: {fileID: -826191641858946356}
+  m_Layer: 6
   m_Name: factory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,6 +32,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-826191641858946356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2364299842312179466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2238293d3754bbd6c919d92bc1501759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &2973025385364947849
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75,6 +88,7 @@ MonoBehaviour:
   selectable: 0
   speed: 20
   newTarget: {x: 0, y: 0, z: 0}
+  oldTarget: {x: 0, y: 0, z: 0}
 --- !u!1001 &5101804316687994428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82,9 +96,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 177098521485857259}
     m_Modifications:
+    - target: {fileID: 159398, guid: 034e15246a35fc54ca1f1e6aa3ce4a4d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 164896, guid: 034e15246a35fc54ca1f1e6aa3ce4a4d, type: 3}
       propertyPath: m_Name
       value: struct_Headquarters_A
+      objectReference: {fileID: 0}
+    - target: {fileID: 164896, guid: 034e15246a35fc54ca1f1e6aa3ce4a4d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 402880, guid: 034e15246a35fc54ca1f1e6aa3ce4a4d, type: 3}
       propertyPath: m_RootOrder

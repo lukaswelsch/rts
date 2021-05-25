@@ -13,6 +13,12 @@ public class Grid<TGridObject>
     private Vector3 originPosition;
     private TGridObject[,] gridArray;
     private TextMesh[,] debugTextArray;
+
+    public event EventHandler<OnGridObjectChangedEventArgs> OnGridObjectChanged;
+    public class OnGridObjectChangedEventArgs : EventArgs {
+        public int x;
+        public int z;
+    }
     
     public float CellSize  => cellSize;
  
@@ -34,6 +40,8 @@ public class Grid<TGridObject>
          }
         
        
+        if(false){
+
         debugTextArray = new TextMesh[width, height];
  
         for (int x = 0; x < gridArray.GetLength(0); x++) {
@@ -45,6 +53,7 @@ public class Grid<TGridObject>
         }
         Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
         Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
+        }
     }
  
     public Vector3 GetWorldPosition(int x, int z) {
@@ -94,6 +103,10 @@ public class Grid<TGridObject>
         textMesh.fontSize = fontSize;
         textMesh.color = color;
         return textMesh;
+    }
+
+     public void TriggerGridObjectChanged(int x, int z) {
+        OnGridObjectChanged?.Invoke(this, new OnGridObjectChangedEventArgs { x = x, z = z });
     }
 }
  

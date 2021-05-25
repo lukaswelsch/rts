@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1411440232505357117
+--- !u!1 &76614588695754436
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9166452970225745740}
-  - component: {fileID: -7114286987706399480}
+  - component: {fileID: 7904813019234745013}
   m_Layer: 6
   m_Name: plane
   m_TagString: Untagged
@@ -17,40 +16,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9166452970225745740
+--- !u!4 &7904813019234745013
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411440232505357117}
+  m_GameObject: {fileID: 76614588695754436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 88.50364, y: -0.00000047683716, z: 77.56421}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2653046597071610298}
+  - {fileID: 3915811933793330243}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7114286987706399480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411440232505357117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2238293d3754bbd6c919d92bc1501759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!54 &1243410536066481429
+--- !u!54 &272250818789898476
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2653046597071758374}
+  m_GameObject: {fileID: 3915811933793214943}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -60,13 +47,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &2621900486783554377
+--- !u!136 &3955459544759916208
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2653046597071758374}
+  m_GameObject: {fileID: 3915811933793214943}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -74,13 +61,13 @@ CapsuleCollider:
   m_Height: 5.7277923
   m_Direction: 1
   m_Center: {x: 0, y: 1.5562094, z: 1.0203404}
---- !u!114 &5486895324926015181
+--- !u!114 &6819329290623578932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2653046597071758374}
+  m_GameObject: {fileID: 3915811933793214943}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2464a184f13197dda4597d1fcd871e4, type: 3}
@@ -89,12 +76,12 @@ MonoBehaviour:
   selectable: 1
   speed: 20
   newTarget: {x: 0, y: 0, z: 0}
---- !u!1001 &2653046597071710118
+--- !u!1001 &3915811933793231455
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 9166452970225745740}
+    m_TransformParent: {fileID: 7904813019234745013}
     m_Modifications:
     - target: {fileID: 115584, guid: 59d53c6b111087d438c6f4042779f7c1, type: 3}
       propertyPath: m_Name
@@ -170,13 +157,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59d53c6b111087d438c6f4042779f7c1, type: 3}
---- !u!1 &2653046597071758374 stripped
+--- !u!1 &3915811933793214943 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 115584, guid: 59d53c6b111087d438c6f4042779f7c1, type: 3}
-  m_PrefabInstance: {fileID: 2653046597071710118}
+  m_PrefabInstance: {fileID: 3915811933793231455}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2653046597071610298 stripped
+--- !u!4 &3915811933793330243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 493084, guid: 59d53c6b111087d438c6f4042779f7c1, type: 3}
-  m_PrefabInstance: {fileID: 2653046597071710118}
+  m_PrefabInstance: {fileID: 3915811933793231455}
   m_PrefabAsset: {fileID: 0}
