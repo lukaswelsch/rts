@@ -27,8 +27,7 @@ public class PlacedObjectType : ScriptableObject
     public Transform visual;
     public int width;
     public int height;
-    public Vector3 customOffset;
-    
+   
     
     public int GetRotationAngle(Dir dir)
     {
@@ -51,6 +50,19 @@ public class PlacedObjectType : ScriptableObject
             case Dir.Left: return new Vector2Int(0,width);
             case Dir.Up: return new Vector2Int(width,height);
             case Dir.Right: return new Vector2Int(height,0);
+        }
+    }
+
+    
+    public float GetMaxOffset(Dir dir)
+    {
+        switch(dir)
+        {
+            default: 
+            case Dir.Down: return width; 
+            case Dir.Left: return height;
+            case Dir.Up: return width;
+            case Dir.Right: return height;
         }
     }
     

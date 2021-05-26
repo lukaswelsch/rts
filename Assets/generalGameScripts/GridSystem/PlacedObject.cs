@@ -8,8 +8,12 @@ public class PlacedObject : MonoBehaviour
    private PlacedObjectType placedObjectType;
    private Vector2Int origin;
    private PlacedObjectType.Dir dir;
+
+   public PlacedObjectType.Dir Dir {get => dir;}
    
    public PlacedObjectType PlacedObjectType {get => placedObjectType;}
+
+   public Vector2Int Origin {get => origin; set => origin = value;}
 
    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectType.Dir dir, PlacedObjectType placedObjectType )
    {
@@ -37,4 +41,6 @@ public class PlacedObject : MonoBehaviour
     {
         return placedObjectType.GetGridPositionList(origin, dir);
     }
+
+
 }

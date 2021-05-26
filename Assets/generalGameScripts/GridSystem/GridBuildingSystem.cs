@@ -14,7 +14,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     public static GridBuildingSystem Instance { get; internal set; }
 
-    public Grid<GridObject> Grid {get => grid;}
+    public Grid<GridObject> Grid { get => grid; }
 
     void Awake()
     {
@@ -50,8 +50,45 @@ public class GridBuildingSystem : MonoBehaviour
 
         public override string ToString()
         {
-            return x + " " + z + "\n" + placedObject;
+            if (placedObject != null)
+                return x + " " + z + "objekt" + "\n";
+            return x + " " + z + "\n";
         }
+    }
+
+    internal void ReLinkObjects(Vector3 oldTarget, Vector3 newTarget, PlacedObject placedObject)
+    {
+
+
+        GridObject gridObject = grid.GetGridObject(oldTarget);
+        if (placedObject != null)
+        {
+            List<Vector2Int> gridPositionList2 = placedObject.GetGridPositionList();
+
+            foreach (Vector2Int gridPosition in gridPositionList2)
+            {
+                grid.GetGridObject(gridPosition.x, gridPosition.y).ClearObject();
+            }
+
+
+        }
+
+
+
+        grid.GetXZ(newTarget, out int x, out int z);
+
+        List<Vector2Int> gridPositionList = placedObject.PlacedObjectType.GetGridPositionList(new Vector2Int(x, z), dir);
+
+        Vector2Int rotationOffset = placedObject.PlacedObjectType.GetRotationOffset(dir);
+
+        Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.CellSize;
+
+        foreach (Vector2Int gridPosition in gridPositionList)
+        {
+            placedObject.Origin = new Vector2Int(x, z);
+            grid.GetGridObject(gridPosition.x, gridPosition.y).PlacedObject = placedObject;
+        }
+
     }
 
 
@@ -61,7 +98,7 @@ public class GridBuildingSystem : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && placedObjectType != null)
         {
-            PlaceObject(MousePosition.GetMousePosition(), placedObjectType);
+            PlaceObject(MousePosition.GetMousePosition());
         }
 
         if (Input.GetMouseButton(1) && Input.GetKeyDown(KeyCode.L))
@@ -73,7 +110,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             dir = PlacedObjectType.GetNextDir(dir);
         }
-           if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             placedObjectType = null;
             RefreshSelectedObjectType();
@@ -114,20 +151,20 @@ public class GridBuildingSystem : MonoBehaviour
         return canbuild;
     }
 
-    internal void PlaceObject(Vector3 position, PlacedObjectType internalPlacedObjectType)
-    {       
+    internal void PlaceObject(Vector3 position)
+    {
         grid.GetXZ(position, out int x, out int z);
 
-        List<Vector2Int> gridPositionList = internalPlacedObjectType.GetGridPositionList(new Vector2Int(x, z), dir);
+        List<Vector2Int> gridPositionList = placedObjectType.GetGridPositionList(new Vector2Int(x, z), dir);
 
 
         if (CheckCanBuild(position, placedObjectType))
         {
-            Vector2Int rotationOffset = internalPlacedObjectType.GetRotationOffset(dir);
+            Vector2Int rotationOffset = placedObjectType.GetRotationOffset(dir);
 
             Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.CellSize;
 
-            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, z), dir, internalPlacedObjectType);
+            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, z), dir, placedObjectType);
 
             foreach (Vector2Int gridPosition in gridPositionList)
             {
@@ -149,16 +186,17 @@ public class GridBuildingSystem : MonoBehaviour
 
             foreach (Vector2Int gridPosition in gridPositionList)
             {
+                print(gridPosition);
                 grid.GetGridObject(gridPosition.x, gridPosition.y).ClearObject();
             }
         }
     }
 
-    internal Vector3 ConvertCoordinateToGridPosition(Vector3 target)
+    internal Vector3 ConvertCoordinateToGridPosition(Vector3 target, PlacedObjectType internalPlacedObjectType)
     {
         grid.GetXZ(target, out int x, out int z);
-                    
-        Vector2Int rotationOffset = placedObjectType.GetRotationOffset(dir);
+
+        Vector2Int rotationOffset = internalPlacedObjectType.GetRotationOffset(dir);
 
         Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.CellSize;
 
@@ -184,11 +222,20 @@ public class GridBuildingSystem : MonoBehaviour
         OnSelectedChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    internal Vector2Int GetRotationOffsetMovement(PlacedObjectType placedObjectTyp, PlacedObjectType.Dir dir)
+    {
+        if (placedObjectType != null)
+        {
+            return placedObjectType.GetRotationOffset(dir);
+        }
+        return Vector2Int.zero;
+    }
 
     internal Vector3 GetMouseWorldSnappedPosition()
     {
         Vector3 mousePosition = MousePosition.GetMousePosition();
         grid.GetXZ(mousePosition, out int x, out int z);
+
 
         if (placedObjectType != null)
         {

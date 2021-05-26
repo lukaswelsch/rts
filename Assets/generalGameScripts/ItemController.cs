@@ -11,61 +11,71 @@ public class ItemController : MonoBehaviour
 
     public Vector3 oldTarget;
 
-    private bool objectmoved = false;
+    private bool objectmoved;
 
-    PlacedObjectType placedObjectType; 
+    
+    [SerializeField] PlacedObjectType placedObjectType; 
+
+
+    private PlacedObject placedObject;
 
 
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         newTarget = transform.position;
         oldTarget = transform.position;
-
+        objectmoved = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        float offset = GridBuildingSystem.Instance.Grid.CellSize / 2;
         float step = speed * Time.deltaTime;
         if (Vector3.Distance(transform.position, newTarget) > 0.1f)
         {
-            float offset = GridBuildingSystem.Instance.Grid.CellSize / 2;
+           // print("moving..");
             transform.position = Vector3.MoveTowards(transform.position, newTarget + new Vector3(offset, 0, offset), step);
-            objectmoved = true;
+          
         }
-        else {
-        if (objectmoved)
-        {
+
+        if(Vector3.Distance(transform.position, newTarget) < GridBuildingSystem.Instance.Grid.CellSize  && objectmoved)
+        {print("restructuring");
+            GridBuildingSystem.Instance.ReLinkObjects(oldTarget, newTarget, placedObject);
             objectmoved = false;
 
+            
+        }
+
+  /*       if (Vector3.Distance(transform.position, newTarget) < 0.1f)
+        {
+           
+print("restructureing");
 
             GridBuildingSystem.Instance.PlaceObject(newTarget, placedObjectType);
             GridBuildingSystem.Instance.RemoveObject(oldTarget);
 
             oldTarget = transform.position;
-        }
-        }
+
+             
+        
+        }*/
 
     }
 
-    public void MoveTo(Vector3 target)
+    public void MoveTo(Vector3 target, PlacedObject placedObject)
     {
         /*if(Vector3.Distance(transform.position, newTarget.position) < speed * Time.deltaTime){
                 transform.position = Vector3.MoveTowards(transform.position, target, step);
         }*/
 
-
-
-
-       PlacedObject po =  gameObject.GetComponentInParent(typeof(PlacedObject)) as PlacedObject;
-
-       placedObjectType = po.PlacedObjectType;
-
-        if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType))
+        if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType) && placedObject != null)
         {
         newTarget = target;
+        this.placedObject = placedObject;
+         objectmoved = true;
         }
     }
 
