@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ItemController : MonoBehaviour
 {
@@ -13,20 +14,29 @@ public class ItemController : MonoBehaviour
 
     private bool objectmoved;
 
+     NavMeshAgent agent;
+       
     
     [SerializeField] PlacedObjectType placedObjectType; 
 
+    [SerializeField] Transform bullet; 
 
+
+    [SerializeField] float health;  
     private PlacedObject placedObject;
+
+    public Transform Bullet { get=> bullet;}
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        agent =  GetComponentInParent<NavMeshAgent>();
         newTarget = transform.position;
         oldTarget = transform.position;
         objectmoved = false;
+         agent.updateUpAxis = false;
     }
 
     // Update is called once per frame
@@ -37,8 +47,8 @@ public class ItemController : MonoBehaviour
         if (Vector3.Distance(transform.position, newTarget) > 0.1f)
         {
            // print("moving..");
-            transform.position = Vector3.MoveTowards(transform.position, newTarget + new Vector3(offset, 0, offset), step);
-          
+           // transform.position = Vector3.MoveTowards(transform.position, newTarget + new Vector3(offset, 0, offset), step);
+             
         }
 
         if(Vector3.Distance(transform.position, newTarget) < GridBuildingSystem.Instance.Grid.CellSize  && objectmoved)
@@ -49,34 +59,32 @@ public class ItemController : MonoBehaviour
             
         }
 
-  /*       if (Vector3.Distance(transform.position, newTarget) < 0.1f)
+
+         if(health < 0)
         {
-           
-print("restructureing");
-
-            GridBuildingSystem.Instance.PlaceObject(newTarget, placedObjectType);
-            GridBuildingSystem.Instance.RemoveObject(oldTarget);
-
-            oldTarget = transform.position;
-
-             
-        
-        }*/
-
+            GridBuildingSystem.Instance.RemoveObject(transform.position);
+        }
     }
 
     public void MoveTo(Vector3 target, PlacedObject placedObject)
     {
-        /*if(Vector3.Distance(transform.position, newTarget.position) < speed * Time.deltaTime){
-                transform.position = Vector3.MoveTowards(transform.position, target, step);
-        }*/
-
-        if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType) && placedObject != null)
+     /*   if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType) && placedObject != null)
         {
         newTarget = target;
         this.placedObject = placedObject;
          objectmoved = true;
-        }
+        }*/
+
+             if(agent != null){
+             agent.SetDestination(target); 
+             }
+             
     }
 
+
+    public void Damage(float amount)
+    {
+            this.health -= amount;
+            print("hit!");
+    }
 }

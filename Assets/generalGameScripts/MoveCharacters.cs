@@ -45,5 +45,30 @@ public class MoveCharacters : MonoBehaviour
                 
             }
         }
+         if (Input.GetKeyDown(KeyCode.B))
+        {
+            Dictionary<int, GameObject> selectedTable = items.getAll();
+            
+            float distanceToOther = 0f;
+            
+            foreach(KeyValuePair<int,GameObject> pair in selectedTable)
+            {
+                
+
+                if(pair.Value != null)
+                {
+                    ItemController ic = selectedTable[pair.Key].GetComponent<ItemController>();
+                    if(ic.Bullet != null){
+                   Transform bulletTransform = Instantiate(ic.Bullet, ic.transform.position, Quaternion.identity);
+                    Vector3 target = MousePosition.GetMousePosition();
+
+                    bulletTransform.GetComponent<bullet>().Setup(target, ic);
+                    }
+            
+                    
+                }
+                
+            }
+    }
     }
 }

@@ -15,6 +15,8 @@ public class PlacedObject : MonoBehaviour
 
    public Vector2Int Origin {get => origin; set => origin = value;}
 
+
+
    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectType.Dir dir, PlacedObjectType placedObjectType )
    {
       Transform placedObjectTransform = Instantiate(placedObjectType.prefab, worldPosition, Quaternion.Euler(0, placedObjectType.GetRotationAngle(dir), 0));
@@ -31,6 +33,11 @@ public class PlacedObject : MonoBehaviour
       return placedObject;
    }
 
+   void Update()
+   {
+     
+   }
+
 
     public void DestroySelf()
     {
@@ -41,6 +48,7 @@ public class PlacedObject : MonoBehaviour
     {
         return placedObjectType.GetGridPositionList(origin, dir);
     }
+
 
 
 }

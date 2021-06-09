@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 177098521485857259}
   - component: {fileID: -826191641858946356}
+  - component: {fileID: -5591949885130309644}
   m_Layer: 6
   m_Name: factory
   m_TagString: Untagged
@@ -44,6 +45,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2238293d3754bbd6c919d92bc1501759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &-5591949885130309644
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2364299842312179466}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 5, y: 5.14, z: 5}
+  m_MoveThreshold: 0.5
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 5, y: 2.84, z: 5}
+  m_TimeToStationary: 1
 --- !u!54 &2973025385364947849
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -89,6 +106,9 @@ MonoBehaviour:
   speed: 20
   newTarget: {x: 0, y: 0, z: 0}
   oldTarget: {x: 0, y: 0, z: 0}
+  placedObjectType: {fileID: 11400000, guid: 2b5520edc27e5bccba71e1653529af48, type: 2}
+  bullet: {fileID: 0}
+  health: 20
 --- !u!1001 &5101804316687994428
 PrefabInstance:
   m_ObjectHideFlags: 0

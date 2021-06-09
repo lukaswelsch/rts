@@ -76,6 +76,9 @@ MonoBehaviour:
   selectable: 1
   speed: 20
   newTarget: {x: 0, y: 0, z: 0}
+  oldTarget: {x: 0, y: 0, z: 0}
+  placedObjectType: {fileID: 0}
+  bullet: {fileID: 918220451358181581, guid: fdda108a6ad0724428050b0aeefe2c6f, type: 3}
 --- !u!1001 &5234183158132167963
 PrefabInstance:
   m_ObjectHideFlags: 0
