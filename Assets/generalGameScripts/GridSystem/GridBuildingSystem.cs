@@ -1,14 +1,16 @@
+ // GridBuildingSystem.cs
 using System;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class GridBuildingSystem : MonoBehaviour
+public class GridBuildingSystem : NetworkBehaviour
 {
-    [SerializeField] private PlacedObjectType placedObjectType;
-    [SerializeField] private PlacedObjectType[] placedObjectList;
+    [SerializeField] public PlacedObjectType placedObjectType;
+    [SerializeField] public PlacedObjectType[] placedObjectList;
 
-    private Grid<GridObject> grid;
-    private PlacedObjectType.Dir dir = PlacedObjectType.Dir.Down;
+    public Grid<GridObject> grid;
+    public PlacedObjectType.Dir dir = PlacedObjectType.Dir.Down;
 
     public event EventHandler OnSelectedChanged;
 
@@ -96,41 +98,7 @@ public class GridBuildingSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && placedObjectType != null)
-        {
-            PlaceObject(MousePosition.GetMousePosition());
-        }
-
-        if (Input.GetMouseButton(1) && Input.GetKeyDown(KeyCode.L))
-        {
-            RemoveObject(MousePosition.GetMousePosition());
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            dir = PlacedObjectType.GetNextDir(dir);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            placedObjectType = null;
-            RefreshSelectedObjectType();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            placedObjectType = placedObjectList[0];
-            RefreshSelectedObjectType();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            placedObjectType = placedObjectList[1];
-            RefreshSelectedObjectType();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            placedObjectType = placedObjectList[2];
-            RefreshSelectedObjectType();
-        }
+       
     }
 
     internal bool CheckCanBuild(Vector3 position, PlacedObjectType placedObjectType)
@@ -151,10 +119,22 @@ public class GridBuildingSystem : MonoBehaviour
         return canbuild;
     }
 
+  [Client]
     internal void PlaceObject(Vector3 position)
     {
+        print("trying to place object");
+             PlaceObjectServer(position);
+    }
+
+   [Command (requiresAuthority = false)]
+    internal void PlaceObjectServer(Vector3 position, NetworkConnectionToClient sender = null)
+    {
+    
+        if (!NetworkServer.active) return;
+
         grid.GetXZ(position, out int x, out int z);
 
+//hier ist etwas null, evtl placedObjectType auf dem Client
         List<Vector2Int> gridPositionList = placedObjectType.GetGridPositionList(new Vector2Int(x, z), dir);
 
 
@@ -164,7 +144,29 @@ public class GridBuildingSystem : MonoBehaviour
 
             Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.CellSize;
 
-            PlacedObject placedObject = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, z), dir, placedObjectType);
+          
+    
+     Transform placedObjectTransform = Instantiate(placedObjectType.prefab, placedObjectWorldPosition, Quaternion.Euler(0, placedObjectType.GetRotationAngle(dir), 0));
+      
+
+
+      PlacedObject placedObject = placedObjectTransform.GetComponent<PlacedObject>();
+
+      placedObject.PlacedObjectType = placedObjectType;
+      placedObject.Dir = dir;
+      placedObject.Origin = new Vector2Int(x, z);
+
+
+     NetworkServer.Spawn(placedObject.gameObject, sender );
+
+    // placedObject.Create(new Vector2Int(0,0), placedObject.Dir, placedObject.PlacedObjectType);
+
+            
+            if(placedObject == null) 
+                print("error placedojbet null");
+
+                if(placedObject.PlacedObjectType == null)
+                print("placed object type null");
 
             foreach (Vector2Int gridPosition in gridPositionList)
             {
@@ -216,8 +218,9 @@ public class GridBuildingSystem : MonoBehaviour
     {
         placedObjectType = null; RefreshSelectedObjectType();
     }
-
-    private void RefreshSelectedObjectType()
+    
+   [Command (requiresAuthority = false)]
+    public void RefreshSelectedObjectType()
     {
         OnSelectedChanged?.Invoke(this, EventArgs.Empty);
     }

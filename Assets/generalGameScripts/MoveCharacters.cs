@@ -27,8 +27,9 @@ public class MoveCharacters : MonoBehaviour
                 {
                     ItemController ic = selectedTable[pair.Key].GetComponent<ItemController>();
 
-                    PlacedObject pc =  ic.GetComponentInParent<PlacedObject>();
-                    
+                    PlacedObject pc =  ic.transform.parent.GetComponentInParent<PlacedObject>();
+
+        
                     Vector3 target = MousePosition.GetMousePosition();
 
                     target.x += distanceToOther;
@@ -49,7 +50,6 @@ public class MoveCharacters : MonoBehaviour
         {
             Dictionary<int, GameObject> selectedTable = items.getAll();
             
-            float distanceToOther = 0f;
             
             foreach(KeyValuePair<int,GameObject> pair in selectedTable)
             {

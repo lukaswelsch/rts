@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class GlobalSelection : MonoBehaviour
@@ -60,14 +61,17 @@ public class GlobalSelection : MonoBehaviour
 
                 if(Physics.Raycast(ray,out hit, 50000.0f))
                 {
-                    if (Input.GetKey(KeyCode.LeftShift)) //inclusive select
-                    {
-                        selected_table.addSelected(hit.transform.gameObject);
-                    }
-                    else //exclusive selected
-                    {
-                        selected_table.deselectAll();
-                        selected_table.addSelected(hit.transform.gameObject);
+                    NetworkIdentity id = hit.transform.GetComponentInParent<NetworkIdentity>();
+                    if(id != null && id.hasAuthority){
+                        if (Input.GetKey(KeyCode.LeftShift)) //inclusive select
+                        {
+                                selected_table.addSelected(hit.transform.gameObject);
+                        }
+                        else //exclusive selected
+                        {
+                            selected_table.deselectAll();
+                            selected_table.addSelected(hit.transform.gameObject);
+                        }
                     }
                 }
                 else //if we didnt hit something
@@ -210,8 +214,11 @@ public class GlobalSelection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-       
-            selected_table.addSelected(other.gameObject);
+        //only mark objects the client has Authority (he has spawned)
+        NetworkIdentity id = other.transform.GetComponentInParent<NetworkIdentity>();
+        if(id != null && id.hasAuthority){
+              selected_table.addSelected(other.gameObject);
+        }
     }
     
     

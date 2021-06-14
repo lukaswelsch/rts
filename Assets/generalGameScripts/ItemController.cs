@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+ public struct TransformInformation
+ {
+     public float x;
+     public float y;
+     public float z;
+ }
 public class ItemController : MonoBehaviour
 {
+
     public bool selectable = true;
     public float speed = 20f;
 
@@ -36,7 +42,6 @@ public class ItemController : MonoBehaviour
         newTarget = transform.position;
         oldTarget = transform.position;
         objectmoved = false;
-         agent.updateUpAxis = false;
     }
 
     // Update is called once per frame
@@ -46,6 +51,11 @@ public class ItemController : MonoBehaviour
         float step = speed * Time.deltaTime;
         if (Vector3.Distance(transform.position, newTarget) > 0.1f)
         {
+          /*  PlacedObject.TransformInformation t1;
+            t1.x = transform.position.x;
+            t1.y = transform.position.y;
+            t1.z = transform.position.z;
+            this.GetComponentInParent<PlacedObject>().RpcSetTransform(t1);*/
            // print("moving..");
            // transform.position = Vector3.MoveTowards(transform.position, newTarget + new Vector3(offset, 0, offset), step);
              
@@ -66,6 +76,8 @@ public class ItemController : MonoBehaviour
         }
     }
 
+
+   
     public void MoveTo(Vector3 target, PlacedObject placedObject)
     {
      /*   if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType) && placedObject != null)
@@ -74,7 +86,7 @@ public class ItemController : MonoBehaviour
         this.placedObject = placedObject;
          objectmoved = true;
         }*/
-
+            
              if(agent != null){
              agent.SetDestination(target); 
              }

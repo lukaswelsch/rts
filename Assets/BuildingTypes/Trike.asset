@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameString: 
   prefab: {fileID: 1725880302263144125, guid: 510e1a28ce6d67202bb1a75b7eb2aaa9, type: 3}
-  visual: {fileID: 5724846156732205983, guid: 80b11a24b21c6c293b5e5186601232e4, type: 3}
+  visual: {fileID: 1725880302263144125, guid: 510e1a28ce6d67202bb1a75b7eb2aaa9, type: 3}
   width: 1
   height: 1
-  customOffset: {x: 0, y: 0, z: 0}
