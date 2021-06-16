@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class BuildingPreview : MonoBehaviour
+public class BuildingPreview : NetworkBehaviour
 {
     private Transform visual;
     private PlacedObjectType placedObjectType;
@@ -12,7 +13,9 @@ public class BuildingPreview : MonoBehaviour
     {
         RefreshVisual();
 
-        GridBuildingSystem.Instance.OnSelectedChanged += Instance_OnSelectedChanged;
+        if(PlayerController.Instance != null)
+
+       PlayerController.Instance.OnSelectedChanged += Instance_OnSelectedChanged;
     }
 
     private void Instance_OnSelectedChanged(object sender, System.EventArgs eventArgs)
@@ -23,14 +26,15 @@ public class BuildingPreview : MonoBehaviour
     private void LateUpdate()
     {
         RefreshVisual();
-        if (GridBuildingSystem.Instance.GetPlacedObjectType() != null)
+        if (PlayerController.Instance != null && PlayerController.Instance.GetPlacedObjectType() != null)
         {
-            Vector3 targetPosition = GridBuildingSystem.Instance.GetMouseWorldSnappedPosition();
+            
+            Vector3 targetPosition = PlayerController.Instance.GetMouseWorldSnappedPosition();
 
             targetPosition.y = 1f;
 
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 15f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, GridBuildingSystem.Instance.GetPlacedObjectRotation(), Time.deltaTime * 15f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, PlayerController.Instance.GetPlacedObjectRotation(), Time.deltaTime * 15f);
         }
     }
 
@@ -41,10 +45,12 @@ public class BuildingPreview : MonoBehaviour
             Destroy(visual.gameObject);
             visual = null;
         }
+        PlacedObjectType placedObjectType = null;
 
-        PlacedObjectType placedObjectType = GridBuildingSystem.Instance.GetPlacedObjectType();
+        if(PlayerController.Instance != null)
+          placedObjectType = PlayerController.Instance.placedObjectType;
 
-        if (placedObjectType != null)
+        if (PlayerController.Instance != null && placedObjectType != null)
         {
             visual = Instantiate(placedObjectType.visual, Vector3.zero, Quaternion.identity);
             visual.parent = transform;

@@ -41,6 +41,8 @@ public static void LinkObjects(PlacedObject placedObject){
    }*/
    
 
+   
+    [Command (requiresAuthority = false)]
     public void DestroySelf()
     {
         Destroy(this.gameObject);

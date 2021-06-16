@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class bullet : MonoBehaviour
@@ -34,13 +35,14 @@ public class bullet : MonoBehaviour
 
     public void OnTriggerEnter(Collider col)
     {
-
+         NetworkIdentity id = col.transform.GetComponentInParent<NetworkIdentity>();
+      
          ItemController itemController = col.GetComponent<ItemController>();
-        if(itemController != null && itemController != ic)
+        if(itemController != null && itemController != ic && !id.hasAuthority)
         {
-        print("hit item controller");
-         itemController.Damage(2);
-         Destroy(gameObject);
+            print("hit item controller");
+            itemController.Damage(2);
+            Destroy(gameObject);
         }
     }
 }

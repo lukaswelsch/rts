@@ -132,6 +132,10 @@ MonoBehaviour:
   selectable: 1
   speed: 20
   newTarget: {x: 0, y: 0, z: 0}
+  oldTarget: {x: 0, y: 0, z: 0}
+  placedObjectType: {fileID: 11400000, guid: 73a9456fcfdff06e08e65311d3f5fb05, type: 2}
+  bullet: {fileID: 0}
+  health: 20
 --- !u!1 &1402650629857464452
 GameObject:
   m_ObjectHideFlags: 0

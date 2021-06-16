@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
  public struct TransformInformation
@@ -73,12 +74,14 @@ public class ItemController : MonoBehaviour
          if(health < 0)
         {
             GridBuildingSystem.Instance.RemoveObject(transform.position);
+            gameObject.GetComponentInParent<PlacedObject>().DestroySelf();
         }
     }
 
+   
 
    
-    public void MoveTo(Vector3 target, PlacedObject placedObject)
+    public void MoveTo(Vector3 target)
     {
      /*   if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType) && placedObject != null)
         {

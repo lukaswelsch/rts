@@ -17,7 +17,9 @@ public class MoveCharacters : MonoBehaviour
         {
             Dictionary<int, GameObject> selectedTable = items.getAll();
             
-            float distanceToOther = 0f;
+            float distanceToOtherX = 0f;
+            float distanceToOtherY = 0f;
+            int i = 1;
             
             foreach(KeyValuePair<int,GameObject> pair in selectedTable)
             {
@@ -32,15 +34,31 @@ public class MoveCharacters : MonoBehaviour
         
                     Vector3 target = MousePosition.GetMousePosition();
 
-                    target.x += distanceToOther;
-
                    
+                        target.x += distanceToOtherX;
+                   
+                        target.z += distanceToOtherY;
 
-                    Vector3 targetn = GridBuildingSystem.Instance.ConvertCoordinateToGridPosition(target, pc.PlacedObjectType);
 
-                    ic.MoveTo(targetn, pc);
+                  //  Vector3 targetn = GridBuildingSystem.Instance.ConvertCoordinateToGridPosition(target, pc.PlacedObjectType);
 
-                    distanceToOther +=  pc.PlacedObjectType.GetMaxOffset(pc.Dir) * GridBuildingSystem.Instance.Grid.CellSize;
+                 //   ic.MoveTo(targetn, pc);
+                 ic.MoveTo(target);
+
+                     distanceToOtherX +=  GridBuildingSystem.Instance.Grid.CellSize;
+
+
+                  if(i % (int) Mathf.Sqrt(selectedTable.Count) == 0)  {             
+                        distanceToOtherY += GridBuildingSystem.Instance.Grid.CellSize; 
+                         distanceToOtherX = 0;
+                  }
+
+                  print("DistnaceToOtherX" + distanceToOtherX);
+                  print("DistnaceToOtherY" + distanceToOtherY);
+
+                 i++;
+
+                   // distanceToOther +=  pc.PlacedObjectType.GetMaxOffset(pc.Dir) * GridBuildingSystem.Instance.Grid.CellSize;
                     
                 }
                 
