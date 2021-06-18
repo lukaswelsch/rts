@@ -46,7 +46,7 @@ public class Grid<TGridObject>
             }
         }
 
-        bool debug = true;
+        bool debug = false;
 
         if (debug)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 
-public class bullet : MonoBehaviour
+public class bullet : NetworkBehaviour
 {
     private Vector3 shootDestination;
     private ItemController ic; 
@@ -26,7 +26,7 @@ public class bullet : MonoBehaviour
         {
           transform.position = Vector3.MoveTowards(transform.position, shootDestination, step);
         }
-        if(Vector3.Distance(transform.position, shootDestination) < GridBuildingSystem.Instance.Grid.CellSize)
+        if(Vector3.Distance(transform.position, shootDestination) < 1)
         {
             Destroy(gameObject);
         }
@@ -41,8 +41,15 @@ public class bullet : MonoBehaviour
         if(itemController != null && itemController != ic && !id.hasAuthority)
         {
             print("hit item controller");
+            
+            //this.gameObject.child.
+            
+            this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+            ParticleSystem.EmissionModule em = this.gameObject.GetComponentInChildren<ParticleSystem>().emission;
+            em.enabled = true;
+            
             itemController.Damage(2);
-            Destroy(gameObject);
+            this.GetComponent<MeshRenderer>().enabled = false;
         }
     }
 }
