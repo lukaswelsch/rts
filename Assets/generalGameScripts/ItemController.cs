@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
- public struct TransformInformation
- {
-     public float x;
-     public float y;
-     public float z;
- }
+
 public class ItemController : MonoBehaviour
 {
 
@@ -101,5 +96,11 @@ public class ItemController : MonoBehaviour
     {
             this.health -= amount;
             print("hit!");
+    }
+
+
+    public void SpawnBullet(Vector3 target)
+    {
+        this.GetComponentInParent<PlacedObject>().SpawnBullet(target);
     }
 }

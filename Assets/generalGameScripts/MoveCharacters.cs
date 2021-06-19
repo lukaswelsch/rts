@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class MoveCharacters : MonoBehaviour
+public class MoveCharacters : NetworkBehaviour
 {
     
     SelectedDictionary items;
+    
     void Start()
     {
         items = GetComponent<SelectedDictionary>();
@@ -77,10 +79,9 @@ public class MoveCharacters : MonoBehaviour
                 {
                     ItemController ic = selectedTable[pair.Key].GetComponent<ItemController>();
                     if(ic.Bullet != null){
-                   Transform bulletTransform = Instantiate(ic.Bullet, ic.transform.position, Quaternion.identity);
-                    Vector3 target = MousePosition.GetMousePosition();
-
-                    bulletTransform.GetComponent<bullet>().Setup(target, ic);
+                       Vector3 target = MousePosition.GetMousePosition();
+                            
+                        ic.SpawnBullet(target);
                     }
             
                     
@@ -89,4 +90,6 @@ public class MoveCharacters : MonoBehaviour
             }
     }
     }
+
+    
 }

@@ -57,17 +57,24 @@ public static void LinkObjects(PlacedObject placedObject){
        
 
     }
- public struct TransformInformation
- {
-     public float x;
-     public float y;
-     public float z;
- }
-[ClientRpc]
-     public void RpcSetTransform(TransformInformation ti)
+    
+     [Command ]
+    public void SpawnBullet(Vector3 target, NetworkConnectionToClient connectionToClient = null){
 
-     {
-         gameObject.transform.position = new Vector3(ti.x, ti.y, ti.z);
-     }
+        ItemController ic = GetComponentInChildren<ItemController>();
 
+        Transform bulletTransform = Instantiate(ic.Bullet, ic.transform.position, Quaternion.identity);
+//        Bullet bullet = (Bullet) Instantiate(ic.Bullet, ic.transform.position, Quaternion.identity);
+
+        Bullet bullet =  bulletTransform.GetComponent<Bullet>();
+        
+        bullet.shootDestination = target;
+        
+        bullet.Setup(target, ic.GetComponentInParent<NetworkIdentity>());
+    
+        NetworkServer.Spawn(bullet.gameObject, connectionToClient);
+
+
+
+    }
 }

@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 
-public class bullet : NetworkBehaviour
+public class Bullet : NetworkBehaviour
 {
-    private Vector3 shootDestination;
-    private ItemController ic; 
+    [SyncVar]
+    public Vector3 shootDestination;
+    private NetworkIdentity networkIdentity; 
 
     // Start is called before the first frame update
-    internal void Setup(Vector3 shootDest, ItemController ic)
+    internal void Setup(Vector3 shootDest, NetworkIdentity networkIdentity)
     {
-        
+        if(shootDest == Vector3.zero) print("achtung shootdet leer");
         this.shootDestination = shootDest;
         transform.eulerAngles = new Vector3(0,0,0);
-        this.ic = ic;
+        this.networkIdentity = networkIdentity;
+    }
+
+    void Start(){
+
     }
 
     // Update is called once per frame
@@ -33,16 +38,18 @@ public class bullet : NetworkBehaviour
        
     }
 
+
     public void OnTriggerEnter(Collider col)
     {
+        if(!hasAuthority) return;
+
          NetworkIdentity id = col.transform.GetComponentInParent<NetworkIdentity>();
       
          ItemController itemController = col.GetComponent<ItemController>();
-        if(itemController != null && itemController != ic && !id.hasAuthority)
+         
+
+if(itemController != null && id != networkIdentity && !id.hasAuthority)
         {
-            print("hit item controller");
-            
-            //this.gameObject.child.
             
             this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
             ParticleSystem.EmissionModule em = this.gameObject.GetComponentInChildren<ParticleSystem>().emission;
@@ -52,4 +59,7 @@ public class bullet : NetworkBehaviour
             this.GetComponent<MeshRenderer>().enabled = false;
         }
     }
-}
+         
+        
+    }
+

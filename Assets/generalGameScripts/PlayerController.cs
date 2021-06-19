@@ -23,12 +23,15 @@ public class PlayerController : NetworkBehaviour
      void Start()
 {
         gridBuildingSystem = GameObject.Find("Testing").GetComponent<GridBuildingSystem>();
+       // CmdSetAuthority();
     }
 
     [Command]
-    void CmdSetAuthority(NetworkIdentity identity)
+    void CmdSetAuthority()
     {
-                    identity.AssignClientAuthority(connectionToClient);
+       // if(!isLocalPlayer) return;
+        //NetworkIdentity mv = GameObject.Find("EventSystem").GetComponent<NetworkIdentity>();
+        //mv.AssignClientAuthority(connectionToClient);
     }
 
 
