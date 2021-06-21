@@ -217,7 +217,7 @@ public class PlayerController : NetworkBehaviour
     }
 
 
-    void SpawnTrikeCmd(PlacedObject target)
+    public void SpawnTrikeCmd(PlacedObject target)
     {
         print("triyng to create trike");
         //evtl brauche ich hier den Type 
@@ -278,11 +278,11 @@ public class PlayerController : NetworkBehaviour
             PlaceObjectServer(MousePosition.GetMousePosition(), placeObjectNumber);
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            SpawnTrikeCmd(MousePosition.GetMousePositionObjects());
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    SpawnTrikeCmd(MousePosition.GetMousePositionObjects());
 
-        }
+        //}
 
         if (Input.GetMouseButton(1) && Input.GetKeyDown(KeyCode.L))
         {
