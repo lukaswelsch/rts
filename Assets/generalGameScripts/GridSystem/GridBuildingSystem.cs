@@ -1,4 +1,4 @@
- // GridBuildingSystem.cs
+// GridBuildingSystem.cs
 using System;
 using System.Collections.Generic;
 using Mirror;
@@ -17,7 +17,8 @@ public class GridBuildingSystem : NetworkBehaviour
     void Awake()
     {
         Instance = this;
-        grid = new Grid<GridObject>(40, 20, 5f, new Vector3(0, 0, 0), (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
+        //fullsize 200x200
+        grid = new Grid<GridObject>(50, 50, 5f, new Vector3(0, 0, 0), (Grid<GridObject> g, int x, int z) => new GridObject(g, x, z));
     }
 
 
@@ -98,6 +99,13 @@ public class GridBuildingSystem : NetworkBehaviour
         Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * grid.CellSize;
 
         return grid.GetWorldPosition(x, z);
+    }
+
+    public PlacedObject GetPlacedObject(Vector3 position)
+    {
+        grid.GetXZ(position, out int x, out int z);
+
+        return grid.GetGridObject(x, z).PlacedObject;
     }
 
 

@@ -90,11 +90,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  startPositions: []
   placedObjectType: {fileID: 11400000, guid: 2b5520edc27e5bccba71e1653529af48, type: 2}
   placedObjectList:
   - {fileID: 11400000, guid: 2b5520edc27e5bccba71e1653529af48, type: 2}
   - {fileID: 11400000, guid: e62db1ce00c0eade98c59bf074c89caf, type: 2}
   - {fileID: 11400000, guid: 73a9456fcfdff06e08e65311d3f5fb05, type: 2}
+  color: {r: 0, g: 0, b: 0, a: 0}
+  placeObjectNumber: 0
+  playerMaterial: {fileID: 0}
+  playerMaterials:
+  - {fileID: 2100000, guid: d697aa8eca9a6074e932a13fe7d7f5c1, type: 2}
+  - {fileID: 2100000, guid: 466c52d1edcd56d4b95e88152cfc7345, type: 2}
+  - {fileID: 2100000, guid: 21583e009529de2498db37e0c7b79bfe, type: 2}
+  playerNumber: 1
+  playerName: 
+  energyMax: 1000
+  currentEnergy: 0
+  current_energyCost: 0
 --- !u!136 &6195598109426499683
 CapsuleCollider:
   m_ObjectHideFlags: 0

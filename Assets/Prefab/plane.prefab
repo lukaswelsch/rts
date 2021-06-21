@@ -44,6 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2238293d3754bbd6c919d92bc1501759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  materialList:
+  - {fileID: 2100000, guid: d697aa8eca9a6074e932a13fe7d7f5c1, type: 2}
+  - {fileID: 2100000, guid: 466c52d1edcd56d4b95e88152cfc7345, type: 2}
+  - {fileID: 2100000, guid: 21583e009529de2498db37e0c7b79bfe, type: 2}
+  playerNumber: 0
 --- !u!54 &1243410536066481429
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -91,6 +98,8 @@ MonoBehaviour:
   newTarget: {x: 0, y: 0, z: 0}
   oldTarget: {x: 0, y: 0, z: 0}
   placedObjectType: {fileID: 11400000, guid: e62db1ce00c0eade98c59bf074c89caf, type: 2}
+  bullet: {fileID: 0}
+  health: 0
 --- !u!1001 &2653046597071710118
 PrefabInstance:
   m_ObjectHideFlags: 0

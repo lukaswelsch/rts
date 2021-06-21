@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -826191641858946356}
   - component: {fileID: -5591949885130309644}
   - component: {fileID: -7952087435814534133}
-  - component: {fileID: 5822640073592288471}
+  - component: {fileID: -3080365056099360376}
   m_Layer: 6
   m_Name: factory
   m_TagString: Untagged
@@ -49,6 +49,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  materialList:
+  - {fileID: 2100000, guid: 9681ded75ce09d08a8f16f40cf974737, type: 2}
+  - {fileID: 2100000, guid: d697aa8eca9a6074e932a13fe7d7f5c1, type: 2}
+  - {fileID: 2100000, guid: 466c52d1edcd56d4b95e88152cfc7345, type: 2}
+  - {fileID: 2100000, guid: 21583e009529de2498db37e0c7b79bfe, type: 2}
+  playerNumber: 0
 --- !u!208 &-5591949885130309644
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -82,7 +88,7 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &5822640073592288471
+--- !u!114 &-3080365056099360376
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,12 +97,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2364299842312179466}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 734b48bea0b204338958ee3d885e11f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clientAuthority: 1
+  clientAuthority: 0
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
@@ -105,6 +111,7 @@ MonoBehaviour:
   interpolateRotation: 1
   interpolatePosition: 1
   syncScale: 1
+  target: {fileID: 5101804316687608828}
 --- !u!54 &2973025385364947849
 Rigidbody:
   m_ObjectHideFlags: 0
