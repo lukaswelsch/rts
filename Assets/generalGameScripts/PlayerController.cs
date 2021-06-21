@@ -217,8 +217,18 @@ public class PlayerController : NetworkBehaviour
     }
 
 
+
+    public void SpawnTrikeFromOutside(PlacedObject target)
+    {
+        GameObject localPlayer = NetworkClient.localPlayer.gameObject;
+        localPlayer.GetComponent<PlayerController>().SpawnTrikeCmd(target);
+    }
     public void SpawnTrikeCmd(PlacedObject target)
     {
+
+
+        if (target == null) print("target trike null");
+
         print("triyng to create trike");
         //evtl brauche ich hier den Type 
         PlacedObject placedObject = target;

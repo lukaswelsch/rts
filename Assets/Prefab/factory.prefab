@@ -779,7 +779,7 @@ Canvas:
   m_GameObject: {fileID: 5355720865499854152}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1340,7 +1340,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6195598109426499693, guid: e1b7aa125f6b6d78abf04212b49804ee, type: 3}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: SpawnTrikeCmd
+        m_MethodName: SpawnTrikeFromOutside
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: -826191641858946356}
@@ -1349,7 +1349,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!1001 &5101804316687994428
 PrefabInstance:
   m_ObjectHideFlags: 0
