@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OpenRoundMenu : MonoBehaviour
+public class OpenRoundMenu : NetworkBehaviour
 {
 
     public GameObject roundMenu;
@@ -20,12 +21,14 @@ public class OpenRoundMenu : MonoBehaviour
 
     public void DeactivateRoundMenu()
     {
-        roundMenu.SetActive(false);
+        if (roundMenu != null)
+            roundMenu.SetActive(false);
     }
 
     private void OnCameraMoved(object sender, System.EventArgs eventArgs)
     {
-        DeactivateRoundMenu();
+        if (sender != null)
+            DeactivateRoundMenu();
     }
 
     // Update is called once per frame
@@ -40,6 +43,7 @@ public class OpenRoundMenu : MonoBehaviour
 
             if (targetObject != null)
             {
+                NetworkClient.localPlayer.gameObject.GetComponent<PlayerController>().localPlacedObject = targetObject;
                 roundMenu.SetActive(true);
                 roundMenu.GetComponent<RectTransform>().transform.position = mousePos;
             }

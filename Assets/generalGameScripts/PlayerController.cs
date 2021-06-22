@@ -130,6 +130,29 @@ public class PlayerController : NetworkBehaviour
             {
                 gridBuildingSystem.grid.GetGridObject(gridPosition.x, gridPosition.y).PlacedObject = placedObject;
             }
+
+            RpcUpdateGridSystem(position, placeObjectNumber);
+        }
+    }
+
+
+    [ClientRpc]
+    public void RpcUpdateGridSystem(Vector3 position, int placeObjectNumber)
+    {
+        PlacedObjectType placedObjectType = placedObjectList[placeObjectNumber];
+
+        gridBuildingSystem.grid.GetXZ(position, out int x, out int z);
+
+        List<Vector2Int> gridPositionList = placedObjectType.GetGridPositionList(new Vector2Int(x, z), gridBuildingSystem.dir);
+
+        if (gridPositionList != null)
+        {
+            PlacedObject placedObject = FindObjectsOfType<PlacedObject>()[0];
+
+            foreach (Vector2Int gridPosition in gridPositionList)
+            {
+                gridBuildingSystem.grid.GetGridObject(gridPosition.x, gridPosition.y).PlacedObject = placedObject;
+            }
         }
     }
 
@@ -223,32 +246,65 @@ public class PlayerController : NetworkBehaviour
         GameObject localPlayer = NetworkClient.localPlayer.gameObject;
         localPlayer.GetComponent<PlayerController>().SpawnTrikeCmd(target);
     }
+
+    /*[SyncVar]
+    bool canBuild = false;
+
+    bool rpcFinished = false;
+
+    [Command]
+    public void ObjectPlacableCmd(Vector3 positionToPlace, int placeObjectNumber)
+    {
+        PlacedObjectType placedObjectType = placedObjectList[placeObjectNumber];
+
+        canBuild = (gridBuildingSystem.CheckCanBuild(positionToPlace, placedObjectType));
+
+        RpcSyncVarWithClients(canBuild);
+    }
+
+    [ClientRpc]
+    void RpcSyncVarWithClients(bool canBuild)
+    {
+        this.canBuild = canBuild;
+        rpcFinished = true;
+    }
+
+
+    IEnumerator StartAskServerForAvailable(Vector3 positionToPlace, int placeObjectNumber)
+    {
+        rpcFinished = false;
+        ObjectPlacableCmd(positionToPlace, placeObjectNumber);
+
+        while (!rpcFinished)
+        {
+            yield return new WaitUntil(() => rpcFinished);
+        }
+
+    }*/
+
+    internal PlacedObject localPlacedObject;
+
     public void SpawnTrikeCmd(PlacedObject target)
     {
 
 
-        if (target == null) print("target trike null");
-
-        print("triyng to create trike");
-        //evtl brauche ich hier den Type 
-        PlacedObject placedObject = target;
-        if (placedObject == null) print("Didnt find placedobject");
+        //evtl brauche ich hier den Type int
+        // PlacedObject localPlacedObject = target;
+        if (localPlacedObject == null) print("Didnt find placedobject");
 
         print(target);
-        if (placedObject != null && placedObject.hasAuthority)
+        if (localPlacedObject != null && localPlacedObject.hasAuthority)
         {
             PlacedObjectType placedObjectType = placedObjectList[2];
 
 
-            Vector3 positionToPlace = placedObject.transform.position;
+            Vector3 positionToPlace = localPlacedObject.transform.position;
 
             float distanceToOther = gridBuildingSystem.grid.CellSize;
 
             for (int i = 0; i < 5; i++)
             {
                 positionToPlace.x += distanceToOther;
-
-                //das klappt so auf dem Client nicht !! 
 
                 if (gridBuildingSystem.CheckCanBuild(positionToPlace, placedObjectType))
                 {
@@ -257,7 +313,7 @@ public class PlayerController : NetworkBehaviour
                 }
             }
 
-            positionToPlace = placedObject.transform.position;
+            positionToPlace = localPlacedObject.transform.position;
 
             for (int i = 0; i < 5; i++)
             {
@@ -269,7 +325,6 @@ public class PlayerController : NetworkBehaviour
                 }
             }
         }
-
     }
 
     [Client]

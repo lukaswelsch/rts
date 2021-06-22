@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MousePosition : MonoBehaviour
 {
@@ -14,7 +15,11 @@ public class MousePosition : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 50000.0f, 1 << 8))
         {
-            target = hit.point;
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                target = hit.point;
+            }
+
         }
         return target;
     }
@@ -29,7 +34,6 @@ public class MousePosition : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 50000.0f, 1 << 6))
         {
-            print("Raycast hat getroffen!");
             gameObject = hit.transform.GetComponentInParent<PlacedObject>();
         }
         return gameObject;
