@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class PlayerController : NetworkBehaviour
@@ -45,11 +46,15 @@ public class PlayerController : NetworkBehaviour
     GridBuildingSystem gridBuildingSystem;
     //  NetworkConnectionToClient = this.GetComponent<NetworkIdentity>();
 
+    Image energyController;
+
     void Start()
     {
         gridBuildingSystem = GameObject.Find("Testing").GetComponent<GridBuildingSystem>();
         // CmdSetAuthority();
         currentEnergy = energyMax;
+
+        energyController = GameObject.Find("EnergyUI").GetComponent<Image>();
     }
 
     [Command]
@@ -331,6 +336,8 @@ public class PlayerController : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer) return;
+
+        energyController.fillAmount = currentEnergy / energyMax;
 
         if (currentEnergy < energyMax && !beeinghandeld)
         {
