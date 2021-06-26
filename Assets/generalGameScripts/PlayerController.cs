@@ -42,6 +42,9 @@ public class PlayerController : NetworkBehaviour
 
     public float current_energyCost = 0f;
 
+    [SyncVar]
+    public int connectedClients;
+
 
     GridBuildingSystem gridBuildingSystem;
     //  NetworkConnectionToClient = this.GetComponent<NetworkIdentity>();
@@ -78,14 +81,24 @@ public class PlayerController : NetworkBehaviour
 
         playerMaterial = playerMaterials[playerNumber];
 
+        GetConnectionCount();
+
+        playerNumber = connectedClients;
+
         SetupPlayerNumber(playerNumber);
 
-        playerNumber++;
+    }
+
+    [Command]
+    void GetConnectionCount()
+    {
+        connectedClients = NetworkServer.connections.Count;
     }
 
     [Command]
     public void SetupPlayerNumber(int playerNumber)
     {
+
         this.playerNumber = playerNumber;
     }
 
@@ -125,7 +138,7 @@ public class PlayerController : NetworkBehaviour
             placedObject.PlacedObjectType = placedObjectType;
             placedObject.Dir = gridBuildingSystem.dir;
             placedObject.Origin = new Vector2Int(x, z);
-            placedObject.playerNumber = playerNumber;
+            placedObject.playerNumber = connectedClients;
 
             NetworkServer.Spawn(placedObject.gameObject, connectionToClient);
 
