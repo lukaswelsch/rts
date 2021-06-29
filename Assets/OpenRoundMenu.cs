@@ -34,14 +34,13 @@ public class OpenRoundMenu : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetMouseButtonDown(1))
         {
             Vector2 mousePos = Input.mousePosition;
 
             PlacedObject targetObject = MousePosition.GetMousePositionObjects();
 
-            if (targetObject != null)
+            if (targetObject != null && targetObject.hasAuthority)
             {
                 NetworkClient.localPlayer.gameObject.GetComponent<PlayerController>().localPlacedObject = targetObject;
                 roundMenu.SetActive(true);

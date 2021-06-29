@@ -390,7 +390,7 @@ public class PlayerController : NetworkBehaviour
             //gridBuildingSystem.placedObjectType = placedObjectList[0];
             placedObjectType = placedObjectList[0];
             placeObjectNumber = 0;
-            //   gridBuildingSystem.RefreshSelectedObjectType();
+            RefreshSelectedObjectType();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -398,6 +398,7 @@ public class PlayerController : NetworkBehaviour
             placedObjectType = placedObjectList[1];
             placeObjectNumber = 1;
             //  gridBuildingSystem.RefreshSelectedObjectType();
+            RefreshSelectedObjectType();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {

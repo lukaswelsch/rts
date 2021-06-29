@@ -9,13 +9,21 @@ public class BuildingPreview : NetworkBehaviour
     private Transform visual;
     private PlacedObjectType placedObjectType;
 
+
+    private PlayerController playerController;
+
     private void Start()
     {
+
         RefreshVisual();
 
-        if(PlayerController.Instance != null)
+        if (!isLocalPlayer) return;
 
-       PlayerController.Instance.OnSelectedChanged += Instance_OnSelectedChanged;
+        playerController.OnSelectedChanged += Instance_OnSelectedChanged;
+
+        if (PlayerController.Instance != null)
+
+            PlayerController.Instance.OnSelectedChanged += Instance_OnSelectedChanged;
     }
 
     private void Instance_OnSelectedChanged(object sender, System.EventArgs eventArgs)
@@ -26,20 +34,23 @@ public class BuildingPreview : NetworkBehaviour
     private void LateUpdate()
     {
         RefreshVisual();
-        if (PlayerController.Instance != null && PlayerController.Instance.GetPlacedObjectType() != null)
+        if (playerController != null && playerController.GetPlacedObjectType() != null)
         {
-            
-            Vector3 targetPosition = PlayerController.Instance.GetMouseWorldSnappedPosition();
+
+            Vector3 targetPosition = playerController.GetMouseWorldSnappedPosition();
 
             targetPosition.y = 1f;
 
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 15f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, PlayerController.Instance.GetPlacedObjectRotation(), Time.deltaTime * 15f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, playerController.GetPlacedObjectRotation(), Time.deltaTime * 15f);
         }
     }
 
     public void RefreshVisual()
     {
+        if (playerController == null && NetworkClient.localPlayer != null)
+            playerController = NetworkClient.localPlayer.gameObject.GetComponent<PlayerController>();
+
         if (visual != null)
         {
             Destroy(visual.gameObject);
@@ -47,10 +58,10 @@ public class BuildingPreview : NetworkBehaviour
         }
         PlacedObjectType placedObjectType = null;
 
-        if(PlayerController.Instance != null)
-          placedObjectType = PlayerController.Instance.placedObjectType;
+        if (playerController != null)
+            placedObjectType = playerController.placedObjectType;
 
-        if (PlayerController.Instance != null && placedObjectType != null)
+        if (playerController != null && placedObjectType != null)
         {
             visual = Instantiate(placedObjectType.visual, Vector3.zero, Quaternion.identity);
             visual.parent = transform;
