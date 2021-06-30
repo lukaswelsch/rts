@@ -20,6 +20,13 @@ public class PlacedObject : NetworkBehaviour
 
     [SyncVar] public int playerNumber = 0;
 
+    public float energyCost;
+
+    public float currentEnergyCost;
+
+
+    ItemController itemController;
+
 
 
 
@@ -27,6 +34,8 @@ public class PlacedObject : NetworkBehaviour
     public void Start()
     {
         RpcUpdateMaterial();
+
+        itemController = GetComponentInChildren<ItemController>();
     }
 
 
@@ -37,29 +46,14 @@ public class PlacedObject : NetworkBehaviour
     }
 
 
-    public static void LinkObjects(PlacedObject placedObject)
+    public void UpdateEnergyCost(float amount)
     {
+        currentEnergyCost -= amount;
 
+        itemController.UpdateDissolveShader(currentEnergyCost / energyCost);
+
+        print("Prozentsatz ist:" + currentEnergyCost / energyCost);
     }
-
-    /* public static Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectType.Dir dir, PlacedObjectType placedObjectType )
-      {
-         Transform placedObjectTransform = Instantiate(placedObjectType.prefab, worldPosition, Quaternion.Euler(0, placedObjectType.GetRotationAngle(dir), 0));
-
-         PlacedObject placedObject = placedObjectTransform.GetComponent<PlacedObject>();
-
-         NetworkServer.Spawn(placedObject.gameObject );
-
-
-         if(placedObject == null)
-         Debug.Log("achtung");
-
-         placedObject.placedObjectType = placedObjectType;
-         placedObject.origin = origin;
-         placedObject.dir = dir;
-
-         return placedObject;
-      }*/
 
 
 

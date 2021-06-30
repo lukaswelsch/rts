@@ -16,28 +16,33 @@ public class ItemController : MonoBehaviour
 
     private bool objectmoved;
 
-     NavMeshAgent agent;
-       
-    
-    [SerializeField] PlacedObjectType placedObjectType; 
-
-    [SerializeField] Transform bullet; 
+    NavMeshAgent agent;
 
 
-    [SerializeField] float health;  
+    [SerializeField] PlacedObjectType placedObjectType;
+
+    [SerializeField] Transform bullet;
+
+
+    [SerializeField] float health;
     private PlacedObject placedObject;
 
-    public Transform Bullet { get=> bullet;}
+    public Transform Bullet { get => bullet; }
+
+    Material mat;
+
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        agent =  GetComponentInParent<NavMeshAgent>();
+        agent = GetComponentInParent<NavMeshAgent>();
         newTarget = transform.position;
         oldTarget = transform.position;
         objectmoved = false;
+
+        mat = GetComponent<Renderer>().material;
     }
 
     // Update is called once per frame
@@ -47,55 +52,61 @@ public class ItemController : MonoBehaviour
         float step = speed * Time.deltaTime;
         if (Vector3.Distance(transform.position, newTarget) > 0.1f)
         {
-          /*  PlacedObject.TransformInformation t1;
-            t1.x = transform.position.x;
-            t1.y = transform.position.y;
-            t1.z = transform.position.z;
-            this.GetComponentInParent<PlacedObject>().RpcSetTransform(t1);*/
-           // print("moving..");
-           // transform.position = Vector3.MoveTowards(transform.position, newTarget + new Vector3(offset, 0, offset), step);
-             
+            /*  PlacedObject.TransformInformation t1;
+              t1.x = transform.position.x;
+              t1.y = transform.position.y;
+              t1.z = transform.position.z;
+              this.GetComponentInParent<PlacedObject>().RpcSetTransform(t1);*/
+            // print("moving..");
+            // transform.position = Vector3.MoveTowards(transform.position, newTarget + new Vector3(offset, 0, offset), step);
+
         }
 
-        if(Vector3.Distance(transform.position, newTarget) < GridBuildingSystem.Instance.Grid.CellSize  && objectmoved)
-        {print("restructuring");
+        if (Vector3.Distance(transform.position, newTarget) < GridBuildingSystem.Instance.Grid.CellSize && objectmoved)
+        {
+            print("restructuring");
             GridBuildingSystem.Instance.ReLinkObjects(oldTarget, newTarget, placedObject);
             objectmoved = false;
 
-            
+
         }
 
 
-         if(health < 0)
+        if (health < 0)
         {
             GridBuildingSystem.Instance.RemoveObject(transform.position);
             gameObject.GetComponentInParent<PlacedObject>().DestroySelf();
         }
     }
 
-   
 
-   
+
+
     public void MoveTo(Vector3 target)
     {
-     /*   if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType) && placedObject != null)
+        /*   if(GridBuildingSystem.Instance.CheckCanBuild(target, placedObjectType) && placedObject != null)
+           {
+           newTarget = target;
+           this.placedObject = placedObject;
+            objectmoved = true;
+           }*/
+
+        if (agent != null)
         {
-        newTarget = target;
-        this.placedObject = placedObject;
-         objectmoved = true;
-        }*/
-            
-             if(agent != null){
-             agent.SetDestination(target); 
-             }
-             
+            agent.SetDestination(target);
+        }
+
     }
 
+    public void UpdateDissolveShader(float amount)
+    {
+        mat.SetFloat("_DissolveAmount", amount);
+    }
 
     public void Damage(float amount)
     {
-            this.health -= amount;
-            print("hit!");
+        this.health -= amount;
+        print("hit!");
     }
 
 

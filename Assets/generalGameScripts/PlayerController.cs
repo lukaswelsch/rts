@@ -60,22 +60,8 @@ public class PlayerController : NetworkBehaviour
         energyController = GameObject.Find("EnergyUI").GetComponent<Image>();
     }
 
-    [Command]
-    void CmdSetAuthority()
-    {
-        // if(!isLocalPlayer) return;
-        //NetworkIdentity mv = GameObject.Find("EventSystem").GetComponent<NetworkIdentity>();
-        //mv.AssignClientAuthority(connectionToClient);
-    }
-
-
-
-
     public override void OnStartLocalPlayer()
     {
-        // Camera.main.transform.SetParent(transform);
-        //Camera.main.transform.localPosition = new Vector3(0, 0, 0);
-
         string name = "Player" + Random.Range(100, 999);
         Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 
@@ -208,7 +194,8 @@ public class PlayerController : NetworkBehaviour
             placedObject.Dir = gridBuildingSystem.dir;
             placedObject.Origin = new Vector2Int(x, z);
             placedObject.playerNumber = 0;
-
+            placedObject.energyCost = energyCost;
+            placedObject.currentEnergyCost = energyCost;
 
 
             foreach (Vector2Int gridPosition in gridPositionList)
@@ -217,26 +204,23 @@ public class PlayerController : NetworkBehaviour
             }
 
         }
-        StartCoroutine(StartTask(placedObject, energyCost, position, placeObjectNumber));
+        StartCoroutine(HandleEnergyCost(placedObject, energyCost, position, placeObjectNumber));
 
     }
 
 
 
-    IEnumerator StartTask(PlacedObject placedObject, float energyCost, Vector3 position, int placeObjectNumber)
+    IEnumerator HandleEnergyCost(PlacedObject placedObject, float energyCost, Vector3 position, int placeObjectNumber)
     {
-        while (energyCost > 0)
+        while (placedObject.currentEnergyCost > 0)
         {
             currentEnergy -= 5;
             yield return new WaitUntil(() => currentEnergy > 0);
-            energyCost -= 5;
+            placedObject.UpdateEnergyCost(5);
         }
-        if (energyCost <= 0)
+        if (placedObject.currentEnergyCost <= 0)
         {
-            print(position);
-
-            if (placedObject == null) print("Placedobject you want to delete is null");
-            else placedObject.localDestroySelf();
+            if (placedObject != null) placedObject.localDestroySelf();
 
             gridBuildingSystem.RemoveObject(position);
 
@@ -246,7 +230,7 @@ public class PlayerController : NetworkBehaviour
 
 
     private bool beeinghandeld = false;
-    IEnumerator WaitSomeTime()
+    IEnumerator RegenerateEnergy()
     {
         beeinghandeld = true;
         currentEnergy += 50;
@@ -265,40 +249,6 @@ public class PlayerController : NetworkBehaviour
         localPlayer.GetComponent<PlayerController>().SpawnTrikeCmd(target);
     }
 
-    /*[SyncVar]
-    bool canBuild = false;
-
-    bool rpcFinished = false;
-
-    [Command]
-    public void ObjectPlacableCmd(Vector3 positionToPlace, int placeObjectNumber)
-    {
-        PlacedObjectType placedObjectType = placedObjectList[placeObjectNumber];
-
-        canBuild = (gridBuildingSystem.CheckCanBuild(positionToPlace, placedObjectType));
-
-        RpcSyncVarWithClients(canBuild);
-    }
-
-    [ClientRpc]
-    void RpcSyncVarWithClients(bool canBuild)
-    {
-        this.canBuild = canBuild;
-        rpcFinished = true;
-    }
-
-
-    IEnumerator StartAskServerForAvailable(Vector3 positionToPlace, int placeObjectNumber)
-    {
-        rpcFinished = false;
-        ObjectPlacableCmd(positionToPlace, placeObjectNumber);
-
-        while (!rpcFinished)
-        {
-            yield return new WaitUntil(() => rpcFinished);
-        }
-
-    }*/
 
     internal PlacedObject localPlacedObject;
 
@@ -354,7 +304,7 @@ public class PlayerController : NetworkBehaviour
 
         if (currentEnergy < energyMax && !beeinghandeld)
         {
-            StartCoroutine(WaitSomeTime());
+            StartCoroutine(RegenerateEnergy());
 
         }
 
@@ -363,11 +313,6 @@ public class PlayerController : NetworkBehaviour
             PlaceObjectServer(MousePosition.GetMousePosition(), placeObjectNumber);
         }
 
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    SpawnTrikeCmd(MousePosition.GetMousePositionObjects());
-
-        //}
 
         if (Input.GetMouseButton(1) && Input.GetKeyDown(KeyCode.L))
         {
@@ -381,28 +326,23 @@ public class PlayerController : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             placedObjectType = null;
-            //gridBuildingSystem.placedObjectType = null;
             RefreshSelectedObjectType();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            //gridBuildingSystem.placedObjectType = placedObjectList[0];
             placedObjectType = placedObjectList[0];
             placeObjectNumber = 0;
             RefreshSelectedObjectType();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            // gridBuildingSystem.placedObjectType = placedObjectList[1];
             placedObjectType = placedObjectList[1];
             placeObjectNumber = 1;
-            //  gridBuildingSystem.RefreshSelectedObjectType();
             RefreshSelectedObjectType();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            // gridBuildingSystem.placedObjectType = placedObjectList[2];
             placedObjectType = placedObjectList[2];
             placeObjectNumber = 2;
             RefreshSelectedObjectType();

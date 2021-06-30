@@ -191,11 +191,13 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   materialList:
-  - {fileID: 2100000, guid: 9681ded75ce09d08a8f16f40cf974737, type: 2}
+  - {fileID: 2100000, guid: 853478ef0dddab83f9cc2f2fb8930656, type: 2}
   - {fileID: 2100000, guid: d697aa8eca9a6074e932a13fe7d7f5c1, type: 2}
   - {fileID: 2100000, guid: 466c52d1edcd56d4b95e88152cfc7345, type: 2}
   - {fileID: 2100000, guid: 21583e009529de2498db37e0c7b79bfe, type: 2}
   playerNumber: 0
+  energyCost: 0
+  currentEnergyCost: 0
 --- !u!114 &-1229352444703385491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,7 +399,7 @@ PrefabInstance:
     - target: {fileID: 2388674, guid: 14159c7587524e34c83af878c6b0cc70, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9681ded75ce09d08a8f16f40cf974737, type: 2}
+      objectReference: {fileID: 2100000, guid: 179555ab8bd66734b8c1ac67e84c7cbc, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14159c7587524e34c83af878c6b0cc70, type: 3}
 --- !u!4 &1162700678821201229 stripped
