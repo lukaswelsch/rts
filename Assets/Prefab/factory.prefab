@@ -255,6 +255,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 466c52d1edcd56d4b95e88152cfc7345, type: 2}
   - {fileID: 2100000, guid: 21583e009529de2498db37e0c7b79bfe, type: 2}
   playerNumber: 0
+  energyCost: 0
+  currentEnergyCost: 0
 --- !u!208 &-5591949885130309644
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -632,7 +634,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f79549247d9455b47aa853830776543b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   roundMenu: {fileID: 3984975528179446875}
+--- !u!114 &8432815486008294494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5101804316687895068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!114 &8488199671140398281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1411,6 +1432,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 402880, guid: 034e15246a35fc54ca1f1e6aa3ce4a4d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347440, guid: 034e15246a35fc54ca1f1e6aa3ce4a4d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369424, guid: 034e15246a35fc54ca1f1e6aa3ce4a4d, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

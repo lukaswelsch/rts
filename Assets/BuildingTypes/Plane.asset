@@ -17,4 +17,4 @@ MonoBehaviour:
   visual: {fileID: 7904813019234745013, guid: e94f4c2e365652902a763f3026d06d79, type: 3}
   width: 3
   height: 2
-  customOffset: {x: 0, y: 0, z: 0}
+  energyCost: 1000

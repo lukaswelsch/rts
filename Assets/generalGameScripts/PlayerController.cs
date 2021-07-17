@@ -37,9 +37,14 @@ public class PlayerController : NetworkBehaviour
     public string playerName;
 
 
+    [SyncVar]
     public float energyMax = 1000f;
+
+    [SyncVar]
     public float currentEnergy = 0f;
 
+
+    [SyncVar]
     public float current_energyCost = 0f;
 
     [SyncVar]
@@ -96,7 +101,6 @@ public class PlayerController : NetworkBehaviour
         PlaceObjectServer(position, placeObjectNumber);
     }
 
-    [Command(requiresAuthority = false)]
     internal void PlaceObjectServer(Vector3 position, int placeObjectNumber)
     {
         PlacedObjectType placedObjectType = placedObjectList[placeObjectNumber];
@@ -124,6 +128,8 @@ public class PlayerController : NetworkBehaviour
             placedObject.PlacedObjectType = placedObjectType;
             placedObject.Dir = gridBuildingSystem.dir;
             placedObject.Origin = new Vector2Int(x, z);
+
+            //TODO Hier evtl anpassen für das Material
             placedObject.playerNumber = connectedClients;
 
             NetworkServer.Spawn(placedObject.gameObject, connectionToClient);
@@ -160,6 +166,7 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    [Command(requiresAuthority = false)]
     public void SpawnTrike(Vector3 position, int placeObjectNumber)
     {
         PlacedObjectType pt = placedObjectList[placeObjectNumber];
@@ -197,6 +204,17 @@ public class PlayerController : NetworkBehaviour
             placedObject.energyCost = energyCost;
             placedObject.currentEnergyCost = energyCost;
 
+            float placeOffset = 10;
+
+            print(placeOffset);
+
+            ItemController ic = placedObject.GetComponentInChildren<ItemController>();
+
+            ic.transform.position = new Vector3(ic.transform.position.x, ic.transform.position.y - placeOffset, ic.transform.position.z);
+
+            NetworkServer.Spawn(placedObject.gameObject, connectionToClient);
+
+
 
             foreach (Vector2Int gridPosition in gridPositionList)
             {
@@ -204,29 +222,58 @@ public class PlayerController : NetworkBehaviour
             }
 
         }
-        StartCoroutine(HandleEnergyCost(placedObject, energyCost, position, placeObjectNumber));
-
+        //  StartCoroutine(HandleEnergyCost(placedObject, energyCost, position, placeObjectNumber));
+        RpcUpdateGridSystem(position, placeObjectNumber);
+        RpcUpdateEnergy(position, placeObjectNumber, pt.energyCost);
     }
 
-
-
-    IEnumerator HandleEnergyCost(PlacedObject placedObject, float energyCost, Vector3 position, int placeObjectNumber)
+    [ClientRpc]
+    internal void RpcUpdateEnergy(Vector3 position, int placeObjectNumber, float energyCost)
     {
-        while (placedObject.currentEnergyCost > 0)
-        {
-            currentEnergy -= 5;
-            yield return new WaitUntil(() => currentEnergy > 0);
-            placedObject.UpdateEnergyCost(5);
-        }
-        if (placedObject.currentEnergyCost <= 0)
-        {
-            if (placedObject != null) placedObject.localDestroySelf();
+        if (!isLocalPlayer) return;
 
-            gridBuildingSystem.RemoveObject(position);
+        PlacedObjectType placedObjectType = placedObjectList[placeObjectNumber];
+        gridBuildingSystem.grid.GetXZ(position, out int x, out int z);
+        List<Vector2Int> gridPositionList = placedObjectType.GetGridPositionList(new Vector2Int(x, z), gridBuildingSystem.dir);
 
-            PlaceObjectServer(position, placeObjectNumber);
+        if (gridPositionList.Count > 0)
+        {
+            Vector2Int gridPosition = gridPositionList[0];
+            PlacedObject placedObject = gridBuildingSystem.grid.GetGridObject(gridPosition.x, gridPosition.y).PlacedObject;
+            print("handle energy");
+
+            StartCoroutine(HandleEnergyCost(placedObject, energyCost, placeObjectNumber));
         }
     }
+
+    IEnumerator HandleEnergyCost(PlacedObject placedObject, float energyCost, int placeObjectNumber)
+    {
+        float yUpdateOffset = 5 / (energyCost / 10);
+
+        print(yUpdateOffset);
+
+        while (energyCost > 0)
+        {
+            this.currentEnergy -= 5;
+            energyCost -= 5;
+            yield return new WaitUntil(() => this.currentEnergy > 0);
+            ItemController ic = placedObject.GetComponentInChildren<ItemController>();
+
+            ic.transform.position = new Vector3(ic.transform.position.x, ic.transform.position.y + yUpdateOffset, ic.transform.position.z);
+        }
+        if (energyCost <= 0)
+        {
+            if (placedObject != null)
+            {
+                placedObject.playerNumber = connectedClients;
+                placedObject.RpcUpdateMaterial();
+                placedObject.ActivateShadows();
+            }
+
+        }
+    }
+
+
 
 
     private bool beeinghandeld = false;
@@ -310,7 +357,8 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetMouseButtonDown(0) && placedObjectType != null)
         {
-            PlaceObjectServer(MousePosition.GetMousePosition(), placeObjectNumber);
+            SpawnTrike(MousePosition.GetMousePosition(), placeObjectNumber);
+            //            PlaceObjectServer(MousePosition.GetMousePosition(), placeObjectNumber);
         }
 
 

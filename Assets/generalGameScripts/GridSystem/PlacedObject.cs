@@ -45,6 +45,17 @@ public class PlacedObject : NetworkBehaviour
         GetComponentInChildren<Renderer>().material = materialList[playerNumber];
     }
 
+    public void ActivateShadows()
+    {
+        MeshRenderer[] mesh = this.GetComponentsInChildren<MeshRenderer>();
+
+        foreach (var meshRenderer in mesh)
+        {
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+        }
+    }
+
 
     public void UpdateEnergyCost(float amount)
     {
